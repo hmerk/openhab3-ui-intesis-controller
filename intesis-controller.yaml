@@ -1,0 +1,329 @@
+uid: intesisACcontroller
+tags: []
+props:
+  parameters:
+    - context: item
+      description: Item for power channel
+      label: Power
+      name: itemPower
+      required: true
+      type: TEXT
+    - context: item
+      description: Item for ambient temperature channel
+      label: Ambient temperature
+      name: itemAmbientTemp
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for outdoor temperature channel
+      label: Outdoor temperature
+      name: itemOutdoorTemp
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for target temperature channel
+      label: Target temperature
+      name: itemTargetTemp
+      required: true
+      type: TEXT
+    - context: item
+      description: Item for operation mode channel
+      label: Operation mode
+      name: itemMode
+      required: true
+      type: TEXT
+    - context: item
+      description: Item for fan speed channel
+      label: Fan speed
+      name: itemFanSpeed
+      required: true
+      type: TEXT
+    - context: item
+      description: Item for vanes up/down channel
+      label: Vanes up/down
+      name: itemVanesUD
+      required: false
+      type: TEXT
+    - context: item
+      description: Item for vanes left/right channel
+      label: Vanes left/right
+      name: itemVanesLR
+      required: false
+      type: TEXT
+  parameterGroups: []
+timestamp: Dec 3, 2020, 8:59:53 AM
+component: f7-block
+config:
+  style:
+    --f7-button-text-color: var(--f7-text-color)
+    --f7-button-bg-color: var(--f7-card-bg-color)
+    --f7-theme-color-rgb: var(--f7-color-blue-rgb)
+  class:
+    - no-padding
+slots:
+  default:
+    - component: f7-row
+      config:
+        class:
+          - margin
+      slots:
+        default:
+          - component: f7-col
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    class:
+                      - margin
+                      - display-flex
+                      - flex-direction-column
+                    text: ON/OFF
+                    action: toggle
+                    actionItem: =(props.itemPower)
+                    actionCommand: ON
+                    actionCommandAlt: OFF
+                    icon-f7: power
+                    iconSize: 28
+                    iconColor: '=(items[props.itemPower].state === "OFF") ? "red" : "green"'
+                    style:
+                      --f7-button-bg-color: transparent
+                      --f7-button-hover-bg-color: transparent
+                      height: auto
+                      font-size: 12px
+          - component: f7-col
+            config:
+              visible: "=(props.itemAmbientTemp === undefined) ? false : true"
+              style:
+                text-align: center
+            slots:
+              default:
+                - component: f7-icon
+                  config:
+                    f7: house
+                    color: green
+                    size: 28
+                - component: Label
+                  config:
+                    text: =items[props.itemAmbientTemp].displayState
+                    style:
+                      white-space: nowrap
+                      overflow: hidden
+                      text-overflow: elipsis
+          - component: f7-col
+            config:
+              visible: "=(props.itemOutdoorTemp === undefined) ? false : true"
+              style:
+                text-align: center
+            slots:
+              default:
+                - component: f7-icon
+                  config:
+                    f7: tree
+                    color: green
+                    size: 28
+                - component: Label
+                  config:
+                    text: =items[props.itemOutdoorTemp].displayState
+                    style:
+                      white-space: nowrap
+                      overflow: hidden
+                      text-overflow: elipsis
+    - component: f7-row
+      config:
+        class:
+          - justify-content-center
+      slots:
+        default:
+          - component: oh-knob
+            config:
+              min: 18
+              max: 30
+              stepSize: 1
+              size: 270
+              item: =props.itemTargetTemp
+    - component: f7-row
+      config:
+        class:
+          - margin
+      slots:
+        default:
+          - component: f7-col
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    class:
+                      - margin
+                      - display-flex
+                      - flex-direction-column
+                    action: command
+                    actionItem: =(props.itemMode)
+                    actionCommand: ="AUTO"
+                    icon-f7: arrow_2_circlepath
+                    iconColor: '=(items[props.itemMode].state === "AUTO") ? "red" : "gray"'
+                    text: AUTO
+                    textColor: '=(items[props.itemMode].state === "AUTO") ? "black" : "gray"'
+                    style:
+                      --f7-button-bg-color: transparent
+                      --f7-button-hover-bg-color: transparent
+                      --f7-button-pressed-bg-color: transparent
+                      font-size: 8px
+                      height: auto
+          - component: f7-col
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    class:
+                      - margin
+                      - display-flex
+                      - flex-direction-column
+                    action: command
+                    actionItem: =(props.itemMode)
+                    actionCommand: ="HEAT"
+                    icon-f7: thermometer_sun
+                    iconColor: '=(items[props.itemMode].state === "HEAT") ? "orange" : "gray"'
+                    text: HEAT
+                    textColor: '=(items[props.itemMode].state === "HEAT") ? "black" : "gray"'
+                    style:
+                      --f7-button-bg-color: transparent
+                      --f7-button-hover-bg-color: transparent
+                      --f7-button-pressed-bg-color: transparent
+                      font-size: 8px
+                      height: auto
+          - component: f7-col
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    class:
+                      - margin
+                      - display-flex
+                      - flex-direction-column
+                    action: command
+                    actionItem: =(props.itemMode)
+                    actionCommand: ="DRY"
+                    icon-f7: drop
+                    iconColor: '=(items[props.itemMode].state === "DRY") ? "yellow" : "gray"'
+                    text: DRY
+                    textColor: '=(items[props.itemMode].state === "DRY") ? "black" : "gray"'
+                    style:
+                      --f7-button-bg-color: transparent
+                      --f7-button-hover-bg-color: transparent
+                      --f7-button-pressed-bg-color: transparent
+                      font-size: 8px
+                      height: auto
+          - component: f7-col
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    class:
+                      - margin
+                      - display-flex
+                      - flex-direction-column
+                    action: command
+                    actionItem: =(props.itemMode)
+                    actionCommand: ="FAN"
+                    icon-f7: wind
+                    iconColor: '=(items[props.itemMode].state === "FAN") ? "white" : "gray"'
+                    text: FAN
+                    textColor: '=(items[props.itemMode].state === "FAN") ? "black" : "gray"'
+                    style:
+                      --f7-button-bg-color: transparent
+                      --f7-button-hover-bg-color: transparent
+                      --f7-button-pressed-bg-color: transparent
+                      font-size: 8px
+                      height: auto
+          - component: f7-col
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    class:
+                      - margin
+                      - display-flex
+                      - flex-direction-column
+                    action: command
+                    actionItem: =(props.itemMode)
+                    actionCommand: ="COOL"
+                    icon-f7: thermometer_snowflake
+                    iconColor: '=(items[props.itemMode].state === "COOL") ? "blue" : "gray"'
+                    text: COOL
+                    textColor: '=(items[props.itemMode].state === "COOL") ? "blue" : "gray"'
+                    style:
+                      --f7-button-bg-color: transparent
+                      --f7-button-hover-bg-color: transparent
+                      --f7-button-pressed-bg-color: transparent
+                      font-size: 8px
+                      height: auto
+    - component: f7-row
+      config: {}
+      slots:
+        default:
+          - component: f7-col
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    action: options
+                    actionItem: =(props.itemFanSpeed)
+                    class:
+                      - margin
+                      - display-flex
+                      - flex-direction-column
+                    icon-f7: chart_bar
+                    iconColor: yellow
+                    size: 20
+                    text: =items[props.itemFanSpeed].state
+                    style:
+                      --f7-button-bg-color: transparent
+                      --f7-button-hover-bg-color: transparent
+                      font-size: 12px
+                      height: auto
+          - component: f7-col
+            config:
+              visible: "=(props.itemVanesUD === undefined) ? false : true"
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    action: options
+                    actionItem: =(props.itemVanesUD)
+                    class:
+                      - margin
+                      - display-flex
+                      - flex-direction-column
+                    icon-f7: arrow_up_down_circle
+                    iconColor: green
+                    size: 20
+                    text: =items[props.itemVanesUD].state
+                    style:
+                      --f7-button-bg-color: transparent
+                      --f7-button-hover-bg-color: transparent
+                      --f7-button-pressed-bg-color: transparent
+                      font-size: 12px
+                      height: auto
+          - component: f7-col
+            config:
+              visible: "=(props.itemVanesLR === undefined) ? false : true"
+            slots:
+              default:
+                - component: oh-button
+                  config:
+                    action: options
+                    actionItem: =(props.itemVanesLR)
+                    class:
+                      - margin
+                      - display-flex
+                      - flex-direction-column
+                    icon-f7: arrow_left_right_circle
+                    iconColor: green
+                    size: 20
+                    text: =items[props.itemVanesLR].state
+                    style:
+                      --f7-button-bg-color: transparent
+                      --f7-button-hover-bg-color: transparent
+                      --f7-button-pressed-bg-color: transparent
+                      height: auto
+                      font-size: 12px
